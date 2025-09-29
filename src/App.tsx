@@ -4,6 +4,7 @@ import { Navigation } from "./components/Navigation";
 import { AboutPage } from "./components/AboutPage";
 import { DateSelector } from "./components/DateSelector";
 import { setCookie, getCookie, deleteCookie } from "./utils/cookies";
+import musicURL from '/Lacrimosa500.mp3';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('timer');
@@ -85,7 +86,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-8 relative">
-      <audio ref={audioRef} src="/Lacrimosa500.mp3" loop />
+      <audio ref={audioRef} src={musicURL} loop />
       <Navigation 
         currentPage={currentPage} 
         onPageChange={setCurrentPage}
