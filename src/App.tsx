@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Timer } from "./components/Timer";
 import { Navigation } from "./components/Navigation";
 import { AboutPage } from "./components/AboutPage";
@@ -9,6 +9,8 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('timer');
   const [targetTime, setTargetTime] = useState<Date | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   // Załaduj zapisaną datę z cookies przy starcie
   useEffect(() => {
@@ -36,6 +38,17 @@ export default function App() {
   const handleNewCountdown = () => {
     setTargetTime(null);
     deleteCookie('targetDate');
+  };
+
+  const toggleMusic = () => {
+    if (audioRef.current) {
+      if (isMusicPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsMusicPlaying(!isMusicPlaying);
+    }
   };
 
   const renderCurrentPage = () => {
@@ -72,7 +85,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-8 relative">
-      <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
+      <audio ref={audioRef} src="/Lacrimosa500.mp3" loop />
+      <Navigation 
+        currentPage={currentPage} 
+        onPageChange={setCurrentPage}
+        isMusicPlaying={isMusicPlaying}
+        toggleMusic={toggleMusic}
+      />
       {renderCurrentPage()}
     </div>
   );
